@@ -1,0 +1,14 @@
+{
+  "name": "veloura-commerce-platform",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Production-oriented fashion e-commerce platform with Angular, Express, MongoDB, and recommendation logic.",
+  "scripts": {
+    "install:all": "npm --prefix backend install && npm --prefix frontend install",
+    "dev:backend": "npm --prefix backend run dev",
+    "dev:frontend": "npm --prefix frontend start",
+    "build:frontend": "npm --prefix frontend run build",
+    "seed": "npm --prefix backend run seed"
+  }
+}
+
