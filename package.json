@@ -9,6 +9,11 @@
     "dev:frontend": "npm --prefix frontend start",
     "build:frontend": "npm --prefix frontend run build",
     "seed": "npm --prefix backend run seed"
+  },
+  "engines": {
+    "node": "20.x"
+  },
+  "dependencies": {
+    "mongoose": "^9.6.1"
   }
 }
-
