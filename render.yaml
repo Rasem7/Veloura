@@ -2,8 +2,13 @@ services:
   - type: web
     name: rasem7-veloura-api
     env: node
+    rootDir: backend
     buildCommand: npm install
     startCommand: npm start
+    buildFilter:
+      paths:
+        - backend/**
+        - render.yaml
     envVars:
       - key: NODE_ENV
         value: production
@@ -13,10 +18,13 @@ services:
         sync: false
       - key: JWT_SECRET
         sync: false
+      - key: JWT_EXPIRES_IN
+        value: 7d
       - key: CLIENT_URL
         sync: false
       - key: CLIENT_URLS
         sync: false
       - key: ADMIN_REGISTRATION_CODE
         sync: false
-
+      - key: STRIPE_SECRET_KEY
+        sync: false

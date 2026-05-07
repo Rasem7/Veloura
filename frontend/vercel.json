@@ -1,4 +1,8 @@
 {
+  "framework": "angular",
+  "installCommand": "npm install",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist/veloura-storefront/browser",
   "rewrites": [
     {
       "source": "/(.*)",
@@ -6,4 +10,3 @@
     }
   ]
 }
-
