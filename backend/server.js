@@ -14,7 +14,9 @@ app.use(cors({
 app.get('/', (req, res) => {
   res.send('Veloura API Running');
 });
-
+app.get('/', (req, res) => {
+  res.send('API Running');
+});
 connectDB()
   .then(() => {
     app.listen(PORT, '0.0.0.0', () => {
