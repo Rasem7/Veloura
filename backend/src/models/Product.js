@@ -35,14 +35,13 @@ ProductSchema.virtual('stock').get(function getStock() {
   return this.sizes.reduce((total, size) => total + size.stock, 0);
 });
 
-ProductSchema.pre('validate', function setSlug(next) {
+ProductSchema.pre('validate', function setSlug() {
   if (!this.slug && this.name) {
     this.slug = this.name
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/(^-|-$)+/g, '');
   }
-  next();
 });
 
 ProductSchema.index({ name: 'text', description: 'text', tags: 'text' });
@@ -50,4 +49,3 @@ ProductSchema.index({ category: 1, price: 1 });
 ProductSchema.index({ viewCount: -1, orderCount: -1 });
 
 module.exports = mongoose.model('Product', ProductSchema);
-

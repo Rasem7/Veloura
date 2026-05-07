@@ -41,6 +41,8 @@ mongod
 
 Or create an Atlas cluster and copy the connection string.
 
+For this workspace, a portable MongoDB binary was downloaded under `.tools/` and started with data stored in `backend/.data/mongo`. Both folders are ignored by Git.
+
 ### 2. Backend
 
 ```bash
@@ -70,6 +72,12 @@ Run the API:
 
 ```bash
 npm run dev
+```
+
+If you are using the portable MongoDB in this workspace, start it first from the repo root:
+
+```powershell
+Start-Process -WindowStyle Hidden -FilePath ".tools\mongodb\mongodb-win32-x86_64-windows-8.2.5\bin\mongod.exe" -ArgumentList '--dbpath="backend\.data\mongo" --bind_ip 127.0.0.1 --port 27017'
 ```
 
 Admin seed login:
@@ -184,4 +192,3 @@ npm --prefix backend audit --audit-level=moderate
 node -e "require('./backend/src/app'); console.log('app loaded')"
 npm --prefix frontend run build
 ```
-

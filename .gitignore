@@ -11,3 +11,7 @@ coverage/
 Thumbs.db
 frontend-dev.log
 frontend-dev.err
+.tools/
+backend/.data/
+backend-api.log
+backend-api.err
