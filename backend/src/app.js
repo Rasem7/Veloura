@@ -46,7 +46,12 @@ app.use('/api/interactions', interactionRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/coupons', couponRoutes);
 app.use('/api/stats', statsRoutes);
-
+app.get('/', (req, res) => {
+  res.json({
+    success: true,
+    message: 'Veloura API Running'
+  });
+});
 app.use(notFound);
 app.use(errorHandler);
 
