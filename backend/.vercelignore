@@ -1,0 +1,9 @@
+node_modules
+.data
+.env
+.env.*
+*.log
+*.err
+npm-debug.log*
+.vercel
+

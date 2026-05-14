@@ -1,0 +1,14 @@
+{
+  "framework": null,
+  "installCommand": "npm install",
+  "buildCommand": "",
+  "outputDirectory": ".",
+  "public": true,
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/api/index.js"
+    }
+  ]
+}
+
