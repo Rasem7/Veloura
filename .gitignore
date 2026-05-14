@@ -15,3 +15,5 @@ frontend-dev.err
 backend/.data/
 backend-api.log
 backend-api.err
+render-login.log
+render-login.err
