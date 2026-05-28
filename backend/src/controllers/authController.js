@@ -8,7 +8,7 @@ const asyncHandler = require('../utils/asyncHandler');
 const { generateToken } = require('../utils/token');
 const { sendAuthCode } = require('../services/emailService');
 
-const accountTypeSchema = z.enum(['client', 'provider']).default('client');
+const accountTypeSchema = z.enum(['client', 'provider']);
 
 const registerSchema = z.object({
   name: z.string().min(2),
