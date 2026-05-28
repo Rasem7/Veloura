@@ -1,4 +1,7 @@
 export type Role = 'user' | 'admin';
+export type AccountType = 'client' | 'provider';
+export type AuthProvider = 'local' | 'email_code' | 'google';
+export type ProviderStatus = 'pending' | 'approved' | 'rejected';
 export type ProductCategory = 'Men' | 'Women' | 'Accessories';
 export type OrderStatus = 'pending' | 'paid' | 'shipped' | 'delivered' | 'cancelled';
 export type PaymentMethod = 'cash_on_delivery' | 'stripe';
@@ -9,8 +12,19 @@ export interface User {
   name: string;
   email: string;
   role: Role;
+  accountType?: AccountType;
+  authProvider?: AuthProvider;
+  phone?: string;
+  providerProfile?: {
+    companyName?: string;
+    website?: string;
+    status?: ProviderStatus;
+  };
   addresses?: ShippingAddress[];
+  isActive?: boolean;
+  lastLoginAt?: string;
   createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface ProductImage {
@@ -130,4 +144,3 @@ export interface Review {
   isVerifiedPurchase: boolean;
   createdAt: string;
 }
-

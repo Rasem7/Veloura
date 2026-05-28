@@ -14,22 +14,39 @@ const AddressSchema = new mongoose.Schema({
 const UserSchema = new mongoose.Schema({
   name: { type: String, required: true, trim: true },
   email: { type: String, required: true, unique: true, lowercase: true, trim: true },
-  passwordHash: { type: String, required: true },
+  passwordHash: { type: String },
   role: { type: String, enum: ['user', 'admin'], default: 'user' },
+  accountType: { type: String, enum: ['client', 'provider'], default: 'client', index: true },
+  authProvider: { type: String, enum: ['local', 'email_code', 'google'], default: 'local' },
+  googleId: { type: String, unique: true, sparse: true },
+  phone: { type: String, trim: true },
+  providerProfile: {
+    companyName: { type: String, trim: true },
+    website: { type: String, trim: true },
+    status: { type: String, enum: ['pending', 'approved', 'rejected'], default: 'pending' }
+  },
   addresses: [AddressSchema],
-  isActive: { type: Boolean, default: true }
+  isActive: { type: Boolean, default: true },
+  lastLoginAt: Date
 }, { timestamps: true });
 
 UserSchema.methods.toSafeJSON = function toSafeJSON() {
   return {
+    _id: this._id,
     id: this._id,
     name: this.name,
     email: this.email,
     role: this.role,
+    accountType: this.accountType,
+    authProvider: this.authProvider,
+    phone: this.phone,
+    providerProfile: this.providerProfile,
     addresses: this.addresses,
-    createdAt: this.createdAt
+    isActive: this.isActive,
+    lastLoginAt: this.lastLoginAt,
+    createdAt: this.createdAt,
+    updatedAt: this.updatedAt
   };
 };
 
 module.exports = mongoose.model('User', UserSchema);
-

@@ -115,6 +115,11 @@ async function seed() {
     { code: 'VIP25', type: 'fixed', value: 25, minSubtotal: 150, usageLimit: 200 }
   ]);
 
+  await User.updateMany(
+    { accountType: { $exists: false } },
+    { $set: { accountType: 'client', authProvider: 'local', isActive: true } }
+  );
+
   const adminEmail = 'admin@veloura.local';
   const existingAdmin = await User.findOne({ email: adminEmail });
   if (!existingAdmin) {
@@ -122,7 +127,28 @@ async function seed() {
       name: 'Veloura Admin',
       email: adminEmail,
       passwordHash: await bcrypt.hash('AdminPass123!', 12),
-      role: 'admin'
+      role: 'admin',
+      accountType: 'client',
+      authProvider: 'local'
+    });
+  }
+
+  const providerEmail = 'provider@veloura.local';
+  const existingProvider = await User.findOne({ email: providerEmail });
+  if (!existingProvider) {
+    await User.create({
+      name: 'Maison Supply Studio',
+      email: providerEmail,
+      passwordHash: await bcrypt.hash('ProviderPass123!', 12),
+      role: 'user',
+      accountType: 'provider',
+      authProvider: 'local',
+      phone: '+1 555 0188',
+      providerProfile: {
+        companyName: 'Maison Supply Studio',
+        website: 'https://veloura.example/providers/maison',
+        status: 'approved'
+      }
     });
   }
 
@@ -135,4 +161,3 @@ seed().catch((error) => {
   console.error(error);
   process.exit(1);
 });
-
