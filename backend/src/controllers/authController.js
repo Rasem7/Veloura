@@ -69,8 +69,8 @@ function codeExpiresAt() {
 }
 
 function shouldExposeMockCode(delivery) {
-  if (process.env.AUTH_CODE_RESPONSE_ENABLED === 'true') return true;
-  if (process.env.AUTH_CODE_RESPONSE_ENABLED === 'false') return false;
+  // The current email service is mocked. Expose the code while mocked so account
+  // creation works until a real provider is connected.
   return Boolean(delivery?.mock);
 }
 

@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 import { CartService } from '../../core/services/cart.service';
+import { LanguageService } from '../../core/services/language.service';
 import { ThemeService } from '../../core/services/theme.service';
 
 @Component({
@@ -17,32 +18,36 @@ import { ThemeService } from '../../core/services/theme.service';
         </a>
 
         <nav class="hidden items-center gap-7 text-sm font-semibold text-slate-600 dark:text-slate-300 md:flex">
-          <a routerLink="/shop" routerLinkActive="text-royal" class="transition hover:text-royal">Shop</a>
-          <a routerLink="/shop" [queryParams]="{category: 'Women'}" class="transition hover:text-royal">Women</a>
-          <a routerLink="/shop" [queryParams]="{category: 'Men'}" class="transition hover:text-royal">Men</a>
-          <a routerLink="/shop" [queryParams]="{category: 'Accessories'}" class="transition hover:text-royal">Accessories</a>
+          <a routerLink="/shop" routerLinkActive="text-royal" class="transition hover:text-royal">{{ language.t('nav.shop') }}</a>
+          <a routerLink="/shop" [queryParams]="{category: 'Women'}" class="transition hover:text-royal">{{ language.t('nav.women') }}</a>
+          <a routerLink="/shop" [queryParams]="{category: 'Men'}" class="transition hover:text-royal">{{ language.t('nav.men') }}</a>
+          <a routerLink="/shop" [queryParams]="{category: 'Accessories'}" class="transition hover:text-royal">{{ language.t('nav.accessories') }}</a>
           @if (auth.isAdmin()) {
-            <a routerLink="/admin" routerLinkActive="text-royal" class="transition hover:text-royal">Admin</a>
+            <a routerLink="/admin" routerLinkActive="text-royal" class="transition hover:text-royal">{{ language.t('nav.admin') }}</a>
           }
         </nav>
 
         <div class="flex items-center gap-2">
-          <button type="button" class="grid h-10 w-10 place-items-center rounded-full border border-purple-100 bg-white text-lg transition hover:border-royal dark:border-white/10 dark:bg-white/5" (click)="theme.toggle()" [attr.aria-label]="theme.isDark() ? 'Use light mode' : 'Use dark mode'">
-            @if (theme.isDark()) { ☾ } @else { ☼ }
+          <button type="button" class="grid h-10 min-w-10 place-items-center rounded-full border border-purple-100 bg-white px-3 text-xs font-black transition hover:border-royal dark:border-white/10 dark:bg-white/5" (click)="language.toggle()" [attr.aria-label]="language.t('nav.language')">
+            {{ language.t('nav.language') }}
           </button>
 
-          <a routerLink="/cart" class="relative grid h-10 w-10 place-items-center rounded-full border border-purple-100 bg-white text-lg transition hover:border-royal dark:border-white/10 dark:bg-white/5" aria-label="Cart">
-            <span>Bag</span>
+          <button type="button" class="grid h-10 min-w-10 place-items-center rounded-full border border-purple-100 bg-white px-3 text-xs font-black transition hover:border-royal dark:border-white/10 dark:bg-white/5" (click)="theme.toggle()" [attr.aria-label]="theme.isDark() ? language.t('nav.light') : language.t('nav.dark')">
+            {{ theme.isDark() ? language.t('nav.light') : language.t('nav.dark') }}
+          </button>
+
+          <a routerLink="/cart" class="relative grid h-10 min-w-10 place-items-center rounded-full border border-purple-100 bg-white px-3 text-xs font-black transition hover:border-royal dark:border-white/10 dark:bg-white/5" [attr.aria-label]="language.t('nav.cart')">
+            <span>{{ language.t('nav.cart') }}</span>
             @if (cart.itemCount() > 0) {
               <span class="absolute -right-1 -top-1 grid h-5 min-w-5 place-items-center rounded-full bg-champagne px-1 text-xs font-black text-ink">{{ cart.itemCount() }}</span>
             }
           </a>
 
           @if (auth.isAuthenticated()) {
-            <a routerLink="/orders" class="hidden rounded-full px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-purple-50 dark:text-slate-200 dark:hover:bg-white/5 sm:inline-flex">{{ auth.user()?.name || 'Account' }}</a>
-            <button type="button" class="btn-secondary px-4 py-2" (click)="auth.logout()">Logout</button>
+            <a routerLink="/orders" class="hidden rounded-full px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-purple-50 dark:text-slate-200 dark:hover:bg-white/5 sm:inline-flex">{{ auth.user()?.name || language.t('nav.account') }}</a>
+            <button type="button" class="btn-secondary px-4 py-2" (click)="auth.logout()">{{ language.t('nav.logout') }}</button>
           } @else {
-            <a routerLink="/login" class="btn-secondary px-4 py-2">Login</a>
+            <a routerLink="/login" class="btn-secondary px-4 py-2">{{ language.t('nav.login') }}</a>
           }
         </div>
       </div>
@@ -52,6 +57,6 @@ import { ThemeService } from '../../core/services/theme.service';
 export class NavbarComponent {
   readonly auth = inject(AuthService);
   readonly cart = inject(CartService);
+  readonly language = inject(LanguageService);
   readonly theme = inject(ThemeService);
 }
-

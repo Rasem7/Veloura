@@ -5,6 +5,7 @@ import { environment } from '../../../environments/environment';
 import { AccountType } from '../../core/models';
 import { AuthService } from '../../core/services/auth.service';
 import { CartService } from '../../core/services/cart.service';
+import { LanguageService } from '../../core/services/language.service';
 import { ToastService } from '../../core/services/toast.service';
 
 declare global {
@@ -32,22 +33,22 @@ declare global {
           <div class="absolute inset-0 bg-velvet/75"></div>
           <div class="relative flex h-full flex-col justify-between p-8 text-white">
             <div>
-              <p class="text-xs font-black uppercase tracking-[0.34em] text-champagne">Veloura Account</p>
-              <h1 class="mt-3 text-4xl font-black">{{ isRegister() ? 'Create your profile' : 'Welcome back' }}</h1>
-              <p class="mt-4 max-w-sm text-sm leading-6 text-purple-100">Fast checkout, saved orders, personalized picks, and provider access in one secure account.</p>
+              <p class="text-xs font-black uppercase tracking-[0.34em] text-champagne">{{ language.t('auth.account') }}</p>
+              <h1 class="mt-3 text-4xl font-black">{{ isRegister() ? language.t('auth.createProfile') : language.t('auth.welcomeBack') }}</h1>
+              <p class="mt-4 max-w-sm text-sm leading-6 text-purple-100">{{ language.t('auth.subtitle') }}</p>
             </div>
             <div class="grid gap-3 text-sm sm:grid-cols-3">
               <div class="border border-white/15 bg-white/10 p-3 backdrop-blur">
-                <p class="font-black">Secure</p>
-                <p class="mt-1 text-xs text-purple-100">JWT sessions</p>
+                <p class="font-black">{{ language.t('auth.secure') }}</p>
+                <p class="mt-1 text-xs text-purple-100">{{ language.t('auth.jwt') }}</p>
               </div>
               <div class="border border-white/15 bg-white/10 p-3 backdrop-blur">
-                <p class="font-black">Instant</p>
-                <p class="mt-1 text-xs text-purple-100">Email code</p>
+                <p class="font-black">{{ language.t('auth.instant') }}</p>
+                <p class="mt-1 text-xs text-purple-100">{{ language.t('auth.emailCode') }}</p>
               </div>
               <div class="border border-white/15 bg-white/10 p-3 backdrop-blur">
-                <p class="font-black">Ready</p>
-                <p class="mt-1 text-xs text-purple-100">Google auth</p>
+                <p class="font-black">{{ language.t('auth.ready') }}</p>
+                <p class="mt-1 text-xs text-purple-100">{{ language.t('auth.googleAuth') }}</p>
               </div>
             </div>
           </div>
@@ -56,66 +57,67 @@ declare global {
         <form class="p-6 sm:p-8" (ngSubmit)="submit()">
           @if (isRegister()) {
             <div class="mb-5 grid grid-cols-2 gap-2 rounded-full bg-purple-50 p-1 dark:bg-white/8">
-              <button class="rounded-full px-4 py-3 text-sm font-black transition" type="button" [class.bg-white]="accountType() === 'client'" [class.text-royal]="accountType() === 'client'" [class.shadow]="accountType() === 'client'" (click)="accountType.set('client')">Client</button>
-              <button class="rounded-full px-4 py-3 text-sm font-black transition" type="button" [class.bg-white]="accountType() === 'provider'" [class.text-royal]="accountType() === 'provider'" [class.shadow]="accountType() === 'provider'" (click)="accountType.set('provider')">Provider</button>
+              <button class="rounded-full px-4 py-3 text-sm font-black transition" type="button" [class.bg-white]="accountType() === 'client'" [class.text-royal]="accountType() === 'client'" [class.shadow]="accountType() === 'client'" (click)="accountType.set('client')">{{ language.t('auth.client') }}</button>
+              <button class="rounded-full px-4 py-3 text-sm font-black transition" type="button" [class.bg-white]="accountType() === 'provider'" [class.text-royal]="accountType() === 'provider'" [class.shadow]="accountType() === 'provider'" (click)="accountType.set('provider')">{{ language.t('auth.provider') }}</button>
             </div>
           }
 
           <div class="mb-5 grid grid-cols-2 gap-2 rounded-full bg-slate-100 p-1 dark:bg-white/8">
-            <button class="rounded-full px-4 py-3 text-sm font-black transition" type="button" [class.bg-white]="authMethod() === 'password'" [class.text-royal]="authMethod() === 'password'" [class.shadow]="authMethod() === 'password'" (click)="switchMethod('password')">Email</button>
-            <button class="rounded-full px-4 py-3 text-sm font-black transition" type="button" [class.bg-white]="authMethod() === 'code'" [class.text-royal]="authMethod() === 'code'" [class.shadow]="authMethod() === 'code'" (click)="switchMethod('code')">Code</button>
+            <button class="rounded-full px-4 py-3 text-sm font-black transition" type="button" [class.bg-white]="authMethod() === 'password'" [class.text-royal]="authMethod() === 'password'" [class.shadow]="authMethod() === 'password'" (click)="switchMethod('password')">{{ language.t('auth.email') }}</button>
+            <button class="rounded-full px-4 py-3 text-sm font-black transition" type="button" [class.bg-white]="authMethod() === 'code'" [class.text-royal]="authMethod() === 'code'" [class.shadow]="authMethod() === 'code'" (click)="switchMethod('code')">{{ language.t('auth.code') }}</button>
           </div>
 
           <button class="mb-5 flex w-full items-center justify-center gap-3 rounded-full border border-purple-100 px-5 py-3 text-sm font-black text-ink transition hover:border-royal hover:text-royal dark:border-white/10 dark:text-white" type="button" (click)="continueWithGoogle()" [disabled]="loading()">
             <span class="grid h-6 w-6 place-items-center rounded-full bg-white text-sm text-royal">G</span>
-            Continue with Google
+            {{ language.t('auth.google') }}
           </button>
 
           <div class="relative mb-5">
             <div class="absolute inset-0 flex items-center"><span class="w-full border-t border-purple-100 dark:border-white/10"></span></div>
-            <div class="relative flex justify-center text-xs uppercase tracking-[0.24em]"><span class="bg-white px-3 text-slate-500 dark:bg-[#12081f]">or</span></div>
+            <div class="relative flex justify-center text-xs uppercase tracking-[0.24em]"><span class="bg-white px-3 text-slate-500 dark:bg-[#12081f]">{{ language.t('auth.or') }}</span></div>
           </div>
 
           @if (isRegister()) {
-            <input class="input" name="name" [(ngModel)]="name" placeholder="Full name" required>
-            <input class="input mt-4" name="phone" [(ngModel)]="phone" placeholder="Phone optional">
+            <input class="input" name="name" [(ngModel)]="name" [placeholder]="language.t('auth.fullName')" required>
+            <input class="input mt-4" name="phone" [(ngModel)]="phone" [placeholder]="language.t('auth.phone')">
             @if (accountType() === 'provider') {
               <div class="mt-4 grid gap-3 sm:grid-cols-2">
-                <input class="input" name="companyName" [(ngModel)]="companyName" placeholder="Company name">
-                <input class="input" name="website" [(ngModel)]="website" placeholder="Website">
+                <input class="input" name="companyName" [(ngModel)]="companyName" [placeholder]="language.t('auth.company')">
+                <input class="input" name="website" [(ngModel)]="website" [placeholder]="language.t('auth.website')">
               </div>
             }
           }
 
-          <input class="input mt-4" type="email" name="email" [(ngModel)]="email" placeholder="Email" required>
+          <input class="input mt-4" type="email" name="email" [(ngModel)]="email" [placeholder]="language.t('auth.email')" required>
 
           @if (authMethod() === 'password') {
-            <input class="input mt-4" type="password" name="password" [(ngModel)]="password" placeholder="Password" required>
+            <input class="input mt-4" type="password" name="password" [(ngModel)]="password" [placeholder]="language.t('auth.password')" required>
             @if (isRegister()) {
-              <input class="input mt-4" name="adminCode" [(ngModel)]="adminCode" placeholder="Admin code optional">
+              <input class="input mt-4" name="adminCode" [(ngModel)]="adminCode" [placeholder]="language.t('auth.adminCode')">
             }
           } @else {
             <div class="mt-4 grid gap-3 sm:grid-cols-[1fr_auto]">
-              <input class="input" name="code" [(ngModel)]="code" placeholder="6-digit code" inputmode="numeric" maxlength="6">
+              <input class="input" name="code" [(ngModel)]="code" [placeholder]="language.t('auth.sixCode')" inputmode="numeric" maxlength="6">
               <button class="btn-secondary px-5 py-3" type="button" (click)="sendEmailCode()" [disabled]="loading()">
-                {{ codeSent() ? 'Resend' : 'Send code' }}
+                {{ codeSent() ? language.t('auth.resend') : language.t('auth.sendCode') }}
               </button>
             </div>
             @if (devCode()) {
-              <button class="mt-3 w-full rounded-lg bg-emerald-50 px-4 py-3 text-left text-sm font-bold text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-200" type="button" (click)="useDevCode()">
-                Mock email code: {{ devCode() }}
+              <button class="mt-3 w-full rounded-lg bg-emerald-50 px-4 py-3 text-sm font-bold text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-200" [class.text-right]="language.isArabic()" [class.text-left]="!language.isArabic()" type="button" (click)="useDevCode()">
+                <span class="block">{{ language.t('auth.mockCode') }}: {{ devCode() }}</span>
+                <span class="mt-1 block text-xs font-semibold opacity-80">{{ language.t('auth.mockHint') }}</span>
               </button>
             }
           }
 
           <button class="btn-primary mt-6 w-full" type="submit" [disabled]="loading()">
-            {{ loading() ? 'Please wait...' : submitLabel() }}
+            {{ loading() ? language.t('auth.wait') : submitLabel() }}
           </button>
 
           @if (isRegister()) {
-            <p class="mt-5 text-center text-sm text-slate-600 dark:text-slate-300">Already have an account? <a routerLink="/login" class="font-bold text-royal">Login</a></p>
+            <p class="mt-5 text-center text-sm text-slate-600 dark:text-slate-300">{{ language.t('auth.haveAccount') }} <a routerLink="/login" class="font-bold text-royal">{{ language.t('auth.login') }}</a></p>
           } @else {
-            <p class="mt-5 text-center text-sm text-slate-600 dark:text-slate-300">New here? <a routerLink="/register" class="font-bold text-royal">Create account</a></p>
+            <p class="mt-5 text-center text-sm text-slate-600 dark:text-slate-300">{{ language.t('auth.newHere') }} <a routerLink="/register" class="font-bold text-royal">{{ language.t('auth.createAccount') }}</a></p>
           }
         </form>
       </div>
@@ -127,6 +129,7 @@ export class AuthComponent implements OnInit {
   private readonly router = inject(Router);
   private readonly auth = inject(AuthService);
   private readonly cart = inject(CartService);
+  readonly language = inject(LanguageService);
   private readonly toast = inject(ToastService);
 
   readonly isRegister = signal(false);
@@ -175,14 +178,14 @@ export class AuthComponent implements OnInit {
       next: () => this.completeSignIn(),
       error: (error) => {
         this.loading.set(false);
-        this.toast.show(error.error?.message || 'Authentication failed', 'error');
+        this.toast.show(error.error?.message || this.language.t('auth.authFailed'), 'error');
       }
     });
   }
 
   sendEmailCode() {
     if (!this.email || (this.isRegister() && !this.name)) {
-      this.toast.show('Add your email and name first', 'info');
+      this.toast.show(this.language.t('auth.addEmailName'), 'info');
       return;
     }
 
@@ -192,23 +195,29 @@ export class AuthComponent implements OnInit {
         this.loading.set(false);
         this.codeSent.set(true);
         this.devCode.set(response.devCode || '');
-        this.toast.show('Verification code sent', 'success');
+        if (response.devCode) {
+          this.code = response.devCode;
+          this.toast.show(this.language.t('auth.codeReady'), 'success');
+          return;
+        }
+
+        this.toast.show(this.language.t('auth.codeSent'), 'success');
       },
       error: (error) => {
         this.loading.set(false);
-        this.toast.show(error.error?.message || 'Could not send code', 'error');
+        this.toast.show(error.error?.message || this.language.t('auth.couldNotSend'), 'error');
       }
     });
   }
 
   verifyEmailCode() {
     if (!this.codeSent()) {
-      this.toast.show('Send a code first', 'info');
+      this.toast.show(this.language.t('auth.sendCodeFirst'), 'info');
       return;
     }
 
     if (!this.code || this.code.length !== 6) {
-      this.toast.show('Enter the 6-digit code', 'info');
+      this.toast.show(this.language.t('auth.enterCode'), 'info');
       return;
     }
 
@@ -217,14 +226,14 @@ export class AuthComponent implements OnInit {
       next: () => this.completeSignIn(),
       error: (error) => {
         this.loading.set(false);
-        this.toast.show(error.error?.message || 'Invalid code', 'error');
+        this.toast.show(error.error?.message || this.language.t('auth.invalidCode'), 'error');
       }
     });
   }
 
   continueWithGoogle() {
     if (!environment.googleClientId) {
-      this.toast.show('Google sign-in needs GOOGLE_CLIENT_ID before launch', 'info');
+      this.toast.show(this.language.t('auth.googleNeedsConfig'), 'info');
       return;
     }
 
@@ -235,7 +244,7 @@ export class AuthComponent implements OnInit {
         callback: (response) => {
           if (!response.credential) {
             this.loading.set(false);
-            this.toast.show('Google did not return a credential', 'error');
+            this.toast.show(this.language.t('auth.googleCredential'), 'error');
             return;
           }
 
@@ -243,7 +252,7 @@ export class AuthComponent implements OnInit {
             next: () => this.completeSignIn(),
             error: (error) => {
               this.loading.set(false);
-              this.toast.show(error.error?.message || 'Google sign-in failed', 'error');
+              this.toast.show(error.error?.message || this.language.t('auth.googleFailed'), 'error');
             }
           });
         }
@@ -256,7 +265,7 @@ export class AuthComponent implements OnInit {
       });
     }).catch(() => {
       this.loading.set(false);
-      this.toast.show('Could not load Google sign-in', 'error');
+      this.toast.show(this.language.t('auth.googleLoadFailed'), 'error');
     });
   }
 
@@ -273,10 +282,10 @@ export class AuthComponent implements OnInit {
 
   submitLabel() {
     if (this.authMethod() === 'code') {
-      return this.isRegister() ? 'Verify & create account' : 'Verify & login';
+      return this.isRegister() ? this.language.t('auth.verifyCreate') : this.language.t('auth.verifyLogin');
     }
 
-    return this.isRegister() ? 'Create account' : 'Login';
+    return this.isRegister() ? this.language.t('auth.createAccount') : this.language.t('auth.login');
   }
 
   private codePayload() {
@@ -294,11 +303,11 @@ export class AuthComponent implements OnInit {
   private completeSignIn() {
     this.cart.mergeGuestCart().subscribe({
       next: () => {
-        this.toast.show('Signed in successfully', 'success');
+        this.toast.show(this.language.t('auth.signedIn'), 'success');
         this.router.navigateByUrl(this.returnUrl);
       },
       error: () => {
-        this.toast.show('Signed in. Cart sync will retry from your bag.', 'info');
+        this.toast.show(this.language.t('auth.cartRetry'), 'info');
         this.router.navigateByUrl(this.returnUrl);
       }
     });
